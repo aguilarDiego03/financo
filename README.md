@@ -1,10 +1,41 @@
+# Diseño y Desarrollo de Base de Datos
+________________________________________
+## Introducción
+Actualmente, las aplicaciones financieras se han convertido en herramientas importantes para ayudar a las personas a administrar su dinero, organizar metas de ahorro y mejorar sus hábitos financieros. Debido a esto, se desarrolló el diseño de una base de datos para una aplicación financiera enfocada en el almacenamiento de información relacionada con usuarios, cálculos de rendimiento, metas financieras y consejos sobre educación financiera.
+La base de datos fue diseñada utilizando principios de normalización para evitar redundancia de información y garantizar la integridad de los datos mediante el uso de claves primarias y claves foráneas.
+________________________________________
+## Propósito del Proyecto
+El propósito de este proyecto es desarrollar una aplicación financiera que permita a los usuarios mejorar la administración de su dinero mediante herramientas de apoyo como consejos financieros, metas de ahorro y simulaciones de rendimiento económico.
+La aplicación busca brindar una experiencia sencilla e intuitiva donde el usuario pueda registrar información personal, calcular posibles ganancias a partir de un monto inicial y un porcentaje de interés, así como consultar recomendaciones relacionadas con el ahorro y las finanzas personales.
+Además, el sistema pretende fomentar la educación financiera permitiendo que los usuarios comprendan cómo puede crecer su dinero con el paso del tiempo mediante cálculos automáticos y visualización organizada de la información almacenada en la base de datos.
+
+________________________________________
+## Entidades que Intervienen en el Flujo de Información
+Usuarios
+La entidad Usuarios almacena la información principal de cada persona registrada en la aplicación. Incluye datos como nombre, correo electrónico, contraseña, fecha de registro y estado de la cuenta.
+Cálculos de Rendimiento
+La entidad Calculos_Rendimiento guarda los cálculos realizados por los usuarios. Aquí se registran datos como monto inicial, porcentaje de interés, tiempo y rendimiento final obtenido.
+Consejos
+La entidad Consejos almacena recomendaciones y contenido educativo relacionado con las finanzas personales.
+Categorías
+La entidad Categorias organiza los consejos financieros en distintos temas, como ahorro, inversión o administración del dinero.
+Metas Financieras
+La entidad Metas_Financieras permite a los usuarios establecer objetivos económicos personales, como ahorrar cierta cantidad de dinero en un tiempo determinado.
+
+
+# Diagrama Entidad-Relacion
+<img width="1536" height="1024" alt="BCE18B4A-D1C2-4F11-8AC3-D3579139EE20" src="https://github.com/user-attachments/assets/c70898e2-e005-4c02-aec4-775b7de57578" />
+
+
 # Diego Aguilar Bautista
 ## 6D
 ## Núm. control: 23308060610084
 ## Especialidad: Programacion
 
+<img width="400" height="500" alt="IMG_2576" src="https://github.com/user-attachments/assets/210e41ce-a39e-4cfd-9032-d320cce9c1e4" />
 
 # Dylan Stinze Reyes
 ## 6D
 ## Núm. control: 23308060610028
 ## Especialidad: Programacion 
+<img width="400" height="500" alt="1000045737" src="https://github.com/user-attachments/assets/e9d3186f-c2ac-4050-833a-12efc5630d77" />
