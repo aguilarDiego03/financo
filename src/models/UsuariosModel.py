@@ -49,7 +49,6 @@ class UsuarioModel:
         return None
     
     def actualizar_ultimo_acceso(self, id_usuario):
-        # Método vacío porque la tabla no tiene el campo ultimo_acceso
         pass
         
     def obtener_por_id(self, id_usuario):

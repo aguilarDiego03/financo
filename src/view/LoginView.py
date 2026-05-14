@@ -29,7 +29,7 @@ def LoginView(page: ft.Page, auth_controller):
         user, msg = auth_controller.login(correo.value, contraseña.value)
         if user:
             page.user_data = user
-            page.go("/menu")  # ← CAMBIADO: ahora va a /menu
+            page.go("/menu") 
         else:
             mensaje.value = msg
             page.update()
