@@ -49,18 +49,8 @@ class UsuarioModel:
         return None
     
     def actualizar_ultimo_acceso(self, id_usuario):
-        conn = self.db.get_connection()
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            UPDATE usuarios
-            SET ultimo_acceso = NOW() 
-            WHERE id_usuario = %s
-            """,
-            (id_usuario,)
-        )
-        conn.commit()
-        conn.close()
+        # Método vacío porque la tabla no tiene el campo ultimo_acceso
+        pass
         
     def obtener_por_id(self, id_usuario):
         conn = self.db.get_connection()

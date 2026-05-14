@@ -2,7 +2,7 @@ import flet as ft
 from controllers.UsuariosController import AuthController
 from view.LoginView import LoginView
 from view.RegisterView import RegisterView  
-from view.MenuView import MenuView  # ← Importar MenuView
+from view.MenuView import MenuView  
 
 def start(page: ft.Page):
     page.title = "Sistema"
@@ -16,7 +16,7 @@ def start(page: ft.Page):
             page.views.append(LoginView(page, auth_ctrl))
         elif page.route == "/register": 
             page.views.append(RegisterView(page, auth_ctrl))
-        elif page.route == "/menu":  # ← Nueva ruta /menu
+        elif page.route == "/menu":  
             user_data = getattr(page, "user_data", None)
             if user_data:
                 page.views.append(MenuView(page, user_data))

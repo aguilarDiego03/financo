@@ -11,16 +11,14 @@ class AuthController:
             if not user_db:
                 return None, "Correo o contraseña incorrectos"
 
-            self.usuario_model.actualizar_ultimo_acceso(user_db["id_usuario"])
+            # Comentado porque la tabla no tiene el campo ultimo_acceso
+            # self.usuario_model.actualizar_ultimo_acceso(user_db["id_usuario"])
         
-            user_db_actualizado = self.usuario_model.obtener_por_id(user_db["id_usuario"])
-
             user = {
-                "id_usuario": user_db_actualizado["id_usuario"],
-                "nombre": user_db_actualizado["nombre"],
-                "email": user_db_actualizado["correo"],
-                "fecha_registro": user_db_actualizado["fecha_registro"],
-                "ultimo_acceso": user_db_actualizado.get("ultimo_acceso"),  
+                "id_usuario": user_db["id_usuario"],
+                "nombre": user_db["nombre"],
+                "email": user_db["correo"],
+                "fecha_registro": user_db["fecha_registro"],
             }
 
             return user, "Login exitoso"
