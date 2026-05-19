@@ -1,16 +1,26 @@
 from models.UsuariosModel import UsuarioModel
 
+
 class AuthController:
+
     def __init__(self):
+
         self.usuario_model = UsuarioModel()
 
+
     def login(self, email, password):
+
         try:
-            user_db = self.usuario_model.validar_login(email, password)
+
+            user_db = self.usuario_model.validar_login(
+                email,
+                password
+            )
 
             if not user_db:
+
                 return None, "Correo o contraseña incorrectos"
-        
+
             user = {
                 "id_usuario": user_db["id_usuario"],
                 "nombre": user_db["nombre"],
@@ -19,20 +29,86 @@ class AuthController:
             }
 
             return user, "Login exitoso"
-        
+
         except Exception as e:
+
             return None, f"Error en login: {str(e)}"
-    
+
+    # =========================
+    # REGISTER
+    # =========================
+
     def registrar(self, usuario_data):
+
         try:
-            if self.usuario_model.email_existe(usuario_data.email):
-                return False, "El correo electrónico ya está registrado"
-            exito = self.usuario_model.registrar(usuario_data)
-            
+
+            if self.usuario_model.email_existe(
+                usuario_data.email
+            ):
+
+                return (
+                    False,
+                    "El correo electrónico ya está registrado"
+                )
+
+            exito = self.usuario_model.registrar(
+                usuario_data
+            )
+
             if exito:
-                return True, "Usuario registrado exitosamente"
+
+                return (
+                    True,
+                    "Usuario registrado exitosamente"
+                )
+
             else:
-                return False, "Error al registrar usuario"
-                
+
+                return (
+                    False,
+                    "Error al registrar usuario"
+                )
+
         except Exception as e:
-            return False, f"Error en registro: {str(e)}"
+
+            return (
+                False,
+                f"Error en registro: {str(e)}"
+            )
+
+
+
+    def recover_password(self, correo):
+
+        try:
+
+            usuario = self.usuario_model.verificar_correo(
+                correo
+            )
+
+            if usuario:
+
+                return True, "Correo encontrado"
+
+            return False, "Correo no existe"
+
+        except Exception as e:
+
+            return (
+                False,
+                f"Error: {str(e)}"
+            )
+    def reset_password(self, correo, nueva_password):
+
+        try:
+
+            self.usuario_model.actualizar_password(
+                correo,
+                nueva_password
+            )
+
+            return True, "Contraseña actualizada"
+
+        except Exception as e:
+
+            return False, f"Error: {str(e)}"

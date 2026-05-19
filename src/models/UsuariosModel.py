@@ -1,10 +1,13 @@
 import bcrypt
 from .databaseModel import Database
 
+
 class UsuarioModel:
+
     def __init__(self):
         self.db = Database()
-    
+
+
     def email_existe(self, email):
         conn = self.db.get_connection()
         cursor = conn.cursor()
@@ -13,20 +16,34 @@ class UsuarioModel:
         existe = cursor.fetchone() is not None
         conn.close()
         return existe
-        
+
+
     def registrar(self, usuario_data):
+
         salt = bcrypt.gensalt()
-        hashed_pw = bcrypt.hashpw(usuario_data.password.encode('utf-8'), salt)
-        
+
+        hashed_pw = bcrypt.hashpw(
+            usuario_data.password.encode("utf-8"),
+            salt
+        )
+
         conn = self.db.get_connection()
+
         cursor = conn.cursor()
+
         try:
+
             cursor.execute(
                 """
-                INSERT INTO usuarios (nombre, correo, contraseña)
+                INSERT INTO usuarios
+                (nombre, correo, contraseña)
                 VALUES (%s, %s, %s)
                 """,
-                (usuario_data.nombre, usuario_data.email, hashed_pw.decode('utf-8'))
+                (
+                    usuario_data.nombre,
+                    usuario_data.email,
+                    hashed_pw.decode("utf-8")
+                )
             )
             conn.commit()
             return True
@@ -35,7 +52,8 @@ class UsuarioModel:
             return False
         finally:
             conn.close()
-        
+
+
     def validar_login(self, email, password):
         conn = self.db.get_connection()
         cursor = conn.cursor(dictionary=True)
@@ -43,14 +61,29 @@ class UsuarioModel:
         cursor.execute(query, (email,))
         user = cursor.fetchone()
         conn.close()
-        
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['contraseña'].encode('utf-8')):
+
+        if user and bcrypt.checkpw(
+            password.encode("utf-8"),
+            user["contraseña"].encode("utf-8")
+        ):
+
             return user
+
         return None
-    
-    def actualizar_ultimo_acceso(self, id_usuario):
-        pass
-        
+
+
+
+    def verificar_correo(self, correo):
+        conn = self.db.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM usuarios WHERE correo = %s"
+        cursor.execute(query, (correo,))
+        usuario = cursor.fetchone()
+        conn.close()
+        return usuario
+
+
+
     def obtener_por_id(self, id_usuario):
         conn = self.db.get_connection()
         cursor = conn.cursor(dictionary=True)
@@ -59,3 +92,35 @@ class UsuarioModel:
         user = cursor.fetchone()
         conn.close()
         return user
+    
+    def actualizar_password(self, correo, nueva_password):
+
+        salt = bcrypt.gensalt()
+
+        hashed_pw = bcrypt.hashpw(
+            nueva_password.encode("utf-8"),
+            salt
+        )
+
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+
+        query = """
+        UPDATE usuarios
+        SET contraseña = %s
+        WHERE correo = %s
+        """
+
+        cursor.execute(
+            query,
+            (
+                hashed_pw.decode("utf-8"),
+                correo
+            )
+        )
+
+        conn.commit()
+
+        conn.close()
+
+        return True

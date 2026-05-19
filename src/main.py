@@ -3,6 +3,9 @@ from controllers.UsuariosController import AuthController
 from view.LoginView import LoginView
 from view.RegisterView import RegisterView  
 from view.MenuView import MenuView  
+from view.olvidoView import OlvidoView
+from view.ResetPasswordView import ResetPasswordView
+
 
 def start(page: ft.Page):
     page.title = "Sistema"
@@ -22,7 +25,10 @@ def start(page: ft.Page):
                 page.views.append(MenuView(page, user_data))
             else:
                 page.go("/")
-        
+        elif page.route == "/forgot-password":
+            page.views.append(OlvidoView(page, auth_ctrl))
+        elif page.route == "/reset-password":
+            page.views.append(ResetPasswordView(page, auth_ctrl))
         if not page.views:
             page.views.append(
                 ft.View("/", [ft.Text("Error: Ruta no encontrada")], bgcolor="#57689E")
