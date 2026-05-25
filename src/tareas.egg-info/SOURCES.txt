@@ -2,7 +2,9 @@ README.md
 pyproject.toml
 src/main.py
 src/controllers/UsuariosController.py
+src/controllers/authController.py
 src/models/UsuariosModel.py
+src/models/authModel.py
 src/models/databaseModel.py
 src/models/schemasModel.py
 src/tareas.egg-info/PKG-INFO
@@ -14,3 +16,5 @@ src/tareas.egg-info/top_level.txt
 src/view/LoginView.py
 src/view/MenuView.py
 src/view/RegisterView.py
+src/view/ResetPasswordView.py
+src/view/olvidoView.py
