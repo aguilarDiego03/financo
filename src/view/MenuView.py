@@ -7,17 +7,25 @@ def MenuView(page: ft.Page, user_data):
         page.go("/")
 
     def ir_cuenta(e):
-        print("Ir a cuenta")
+        from view.CuentaView import CuentaView
+        page.views.append(CuentaView(page, user_data))
+        page.update()
 
     def ir_consejos(e):
-        print("Ir a consejos")
+        from view.ConsejosView import ConsejosView
+        page.views.append(ConsejosView(page, user_data))
+        page.update()
 
     def ir_inversiones(e):
-        print("Ir a inversiones")
+        from view.InversionesView import InversionesView
+        page.views.append(InversionesView(page, user_data))
+        page.update()
 
     return ft.View(
         route="/menu",
         bgcolor="#EAF0FF",
+        padding=0,
+        spacing=0,
         controls=[
             ft.Container(
                 bgcolor="#57689E",
@@ -25,7 +33,7 @@ def MenuView(page: ft.Page, user_data):
                 content=ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text("FinanceApp", size=30, weight="bold", color="white"),
+                        ft.Text("FinanCO", size=30, weight="bold", color="white"),
                         ft.Row(
                             spacing=15,
                             controls=[
@@ -39,18 +47,26 @@ def MenuView(page: ft.Page, user_data):
                 )
             ),
             ft.Container(
-                padding=30,
                 expand=True,
+                padding=30,
                 content=ft.Column(
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    alignment=ft.MainAxisAlignment.CENTER,
                     spacing=30,
+                    scroll=ft.ScrollMode.AUTO,
                     controls=[
+                        ft.Container(height=20),
                         ft.Text(
                             f"¡Bienvenido {user_data.get('nombre', 'Usuario')}!",
                             size=40,
                             weight="bold",
-                            color="#2D3E6F"
+                            color="#2D3E6F",
+                            text_align=ft.TextAlign.CENTER,
+                        ),
+                        ft.Text(
+                            "Tu plataforma de educación financiera",
+                            size=20,
+                            color="#555555",
+                            text_align=ft.TextAlign.CENTER,
                         ),
                         ft.Card(
                             elevation=10,
@@ -68,14 +84,15 @@ def MenuView(page: ft.Page, user_data):
                                             "¿Qué son las finanzas?",
                                             size=28,
                                             weight="bold",
-                                            color="#57689E"
+                                            color="#57689E",
+                                            text_align=ft.TextAlign.CENTER,
                                         ),
                                         ft.Text(
                                             "Las finanzas son la administración del dinero. "
                                             "Ayudan a controlar ingresos, gastos, ahorros "
                                             "e inversiones para tomar mejores decisiones económicas.",
                                             size=16,
-                                            text_align=ft.TextAlign.CENTER
+                                            text_align=ft.TextAlign.CENTER,
                                         ),
                                     ]
                                 )
@@ -96,8 +113,9 @@ def MenuView(page: ft.Page, user_data):
                             on_click=cerrar_sesion,
                             bgcolor="#57689E",
                             color="white",
-                            width=200
-                        )
+                            width=200,
+                        ),
+                        ft.Container(height=20),
                     ]
                 )
             )
