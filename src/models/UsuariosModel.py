@@ -124,3 +124,46 @@ class UsuarioModel:
         conn.close()
 
         return True
+
+
+    def guardar_calculo(self, id_usuario, monto_inicial, porcentaje_interes, tiempo_meses, rendimiento_final):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = """
+        INSERT INTO calculos_rendimiento 
+        (id_usuario, monto_inicial, porcentaje_interes, tiempo_meses, rendimiento_final)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        
+        cursor.execute(query, (id_usuario, monto_inicial, porcentaje_interes, tiempo_meses, rendimiento_final))
+        conn.commit()
+        conn.close()
+        return True
+
+    def obtener_calculos_usuario(self, id_usuario):
+        conn = self.db.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        query = """
+        SELECT id_calculo, monto_inicial, porcentaje_interes, tiempo_meses, 
+            rendimiento_final, fecha_calculo
+        FROM calculos_rendimiento 
+        WHERE id_usuario = %s
+        ORDER BY fecha_calculo DESC
+        """
+        
+        cursor.execute(query, (id_usuario,))
+        calculos = cursor.fetchall()
+        conn.close()
+        return calculos
+
+    def eliminar_calculo(self, id_calculo, id_usuario):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = "DELETE FROM calculos_rendimiento WHERE id_calculo = %s AND id_usuario = %s"
+        cursor.execute(query, (id_calculo, id_usuario))
+        conn.commit()
+        conn.close()
+        return True

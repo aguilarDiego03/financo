@@ -34,9 +34,6 @@ class AuthController:
 
             return None, f"Error en login: {str(e)}"
 
-    # =========================
-    # REGISTER
-    # =========================
 
     def registrar(self, usuario_data):
 
@@ -111,4 +108,47 @@ class AuthController:
 
         except Exception as e:
 
+            return False, f"Error: {str(e)}"
+
+
+    def calcular_rendimiento(self, monto_inicial, porcentaje, meses):
+        try:
+            monto = float(monto_inicial)
+            interes = float(porcentaje)
+            tiempo = int(meses)
+            
+            rendimiento = monto * (1 + (interes / 100) * (tiempo / 12))
+            return round(rendimiento, 2)
+        except Exception as e:
+            return None
+
+    def guardar_calculo(self, id_usuario, monto_inicial, porcentaje_interes, tiempo_meses):
+        try:
+            rendimiento_final = self.calcular_rendimiento(monto_inicial, porcentaje_interes, tiempo_meses)
+            
+            if rendimiento_final is None:
+                return False, "Error en el cálculo"
+            
+            self.usuario_model.guardar_calculo(
+                id_usuario, 
+                monto_inicial, 
+                porcentaje_interes, 
+                tiempo_meses, 
+                rendimiento_final
+            )
+            return True, "Cálculo guardado exitosamente"
+        except Exception as e:
+            return False, f"Error: {str(e)}"
+
+    def obtener_calculos_usuario(self, id_usuario):
+        try:
+            return self.usuario_model.obtener_calculos_usuario(id_usuario)
+        except Exception as e:
+            return []
+
+    def eliminar_calculo(self, id_calculo, id_usuario):
+        try:
+            self.usuario_model.eliminar_calculo(id_calculo, id_usuario)
+            return True, "Cálculo eliminado"
+        except Exception as e:
             return False, f"Error: {str(e)}"

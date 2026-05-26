@@ -1,6 +1,6 @@
 import flet as ft
 
-def MenuView(page: ft.Page, user_data):
+def MenuView(page: ft.Page, user_data, auth_controller):
 
     def cerrar_sesion(e):
         page.user_data = None
@@ -21,6 +21,11 @@ def MenuView(page: ft.Page, user_data):
         page.views.append(InversionesView(page, user_data))
         page.update()
 
+    def ir_calculadora(e):
+        from view.CalculadoraView import CalculadoraView
+        page.views.append(CalculadoraView(page, user_data, auth_controller))
+        page.update()
+
     return ft.View(
         route="/menu",
         bgcolor="#EAF0FF",
@@ -33,7 +38,7 @@ def MenuView(page: ft.Page, user_data):
                 content=ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text("FinanCO", size=30, weight="bold", color="white"),
+                        ft.Text("FinanceApp", size=30, weight="bold", color="white"),
                         ft.Row(
                             spacing=15,
                             controls=[
@@ -41,6 +46,7 @@ def MenuView(page: ft.Page, user_data):
                                 ft.TextButton("Cuenta", on_click=ir_cuenta, style=ft.ButtonStyle(color="white")),
                                 ft.TextButton("Consejos", on_click=ir_consejos, style=ft.ButtonStyle(color="white")),
                                 ft.TextButton("Inversiones", on_click=ir_inversiones, style=ft.ButtonStyle(color="white")),
+                                ft.TextButton("Calculadora", on_click=ir_calculadora, style=ft.ButtonStyle(color="white")),
                             ]
                         )
                     ]

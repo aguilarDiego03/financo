@@ -13,6 +13,9 @@ src/tareas.egg-info/dependency_links.txt
 src/tareas.egg-info/entry_points.txt
 src/tareas.egg-info/requires.txt
 src/tareas.egg-info/top_level.txt
+src/view/ConsejosView.py
+src/view/CuentaView.py
+src/view/InversionesView.py
 src/view/LoginView.py
 src/view/MenuView.py
 src/view/RegisterView.py
