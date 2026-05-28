@@ -11,7 +11,6 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
         width=300,
         bgcolor="#F0F0F0",
         border_radius=10,
-        prefix_text="$",
     )
 
     porcentaje_input = ft.TextField(
@@ -19,7 +18,6 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
         width=300,
         bgcolor="#F0F0F0",
         border_radius=10,
-        suffix_text="%",
     )
 
     meses_input = ft.TextField(
@@ -47,9 +45,23 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
 
     def cargar_calculos():
         calculos = auth_controller.obtener_calculos_usuario(user_data['id_usuario'])
+        print(f"DEBUG - Cargando {len(calculos)} cálculos")  # Debug
         tabla_calculos.rows.clear()
         
         for calc in calculos:
+            id_calc = calc['id_calculo']
+            print(f"DEBUG - Creando botón para ID: {id_calc}")  # Debug
+            
+            def crear_boton(id_calculo):
+                return ft.ElevatedButton(
+                    "Eliminar",
+                    on_click=lambda e, id_c=id_calculo: eliminar_calculo(id_c),
+                    bgcolor="red",
+                    color="white",
+                    width=80,
+                    height=30,
+                )
+            
             tabla_calculos.rows.append(
                 ft.DataRow(
                     cells=[
@@ -58,14 +70,7 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
                         ft.DataCell(ft.Text(str(calc['tiempo_meses']))),
                         ft.DataCell(ft.Text(f"${calc['rendimiento_final']:,.2f}", color="green", weight="bold")),
                         ft.DataCell(ft.Text(str(calc['fecha_calculo'])[:10])),
-                        ft.DataCell(
-                            ft.IconButton(
-                                icon=ft.icons.DELETE,
-                                icon_color="red",
-                                tooltip="Eliminar",
-                                on_click=lambda e, id_calc=calc['id_calculo']: eliminar_calculo(id_calc)
-                            )
-                        ),
+                        ft.DataCell(crear_boton(id_calc)),
                     ]
                 )
             )
@@ -81,7 +86,7 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
             
             if rendimiento:
                 ganancia = rendimiento - monto
-                resultado_texto.value = f"💰 Rendimiento total: ${rendimiento:,.2f} (Ganancia: ${ganancia:,.2f})"
+                resultado_texto.value = f"Rendimiento total: ${rendimiento:,.2f} (Ganancia: ${ganancia:,.2f})"
                 mensaje.value = ""
             else:
                 resultado_texto.value = ""
@@ -99,34 +104,32 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
             porcentaje = float(porcentaje_input.value)
             meses = int(meses_input.value)
             
-            success, msg = auth_controller.guardar_calculo(
-                user_data['id_usuario'],
-                monto,
-                porcentaje,
-                meses
-            )
+            rendimiento = auth_controller.calcular_rendimiento(monto, porcentaje, meses)
+            resultado_texto.value = f"Rendimiento: ${rendimiento:,.2f}"
+            
+            success, msg = auth_controller.guardar_calculo(user_data['id_usuario'], monto, porcentaje, meses)
+            mensaje.value = msg
+            mensaje.color = "green" if success else "red"
             
             if success:
-                mensaje.value = msg
-                mensaje.color = "green"
+                cargar_calculos()  
                 monto_input.value = ""
                 porcentaje_input.value = ""
                 meses_input.value = ""
-                resultado_texto.value = ""
-                cargar_calculos()
-            else:
-                mensaje.value = msg
-                mensaje.color = "red"
             
             page.update()
-        except ValueError:
-            mensaje.value = "Complete todos los campos correctamente"
+        except Exception as ex:
+            mensaje.value = f"Error: {str(ex)}"
             mensaje.color = "red"
             page.update()
 
     def eliminar_calculo(id_calculo):
+        print(f"DEBUG - Eliminar cálculo ID: {id_calculo}")  # Debug
+        
         def confirmar_eliminar(e):
+            print(f"DEBUG - Confirmando eliminación ID: {id_calculo}")  # Debug
             success, msg = auth_controller.eliminar_calculo(id_calculo, user_data['id_usuario'])
+            print(f"DEBUG - Resultado: success={success}, msg={msg}")  # Debug
             if success:
                 cargar_calculos()
                 mensaje.value = msg
@@ -143,17 +146,17 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
         
         dialog = ft.AlertDialog(
             title=ft.Text("Confirmar eliminación"),
-            content=ft.Text("¿Seguro que deseas eliminar este cálculo?"),
+            content=ft.Text(f"¿Seguro que deseas eliminar este cálculo ID {id_calculo}?"),
             actions=[
                 ft.TextButton("Sí", on_click=confirmar_eliminar),
                 ft.TextButton("No", on_click=cerrar_dialogo),
             ],
+            actions_alignment=ft.MainAxisAlignment.END,
         )
         page.dialog = dialog
         dialog.open = True
         page.update()
 
-    # Cargar cálculos al abrir la vista
     cargar_calculos()
 
     return ft.View(
@@ -181,7 +184,7 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
                     scroll=ft.ScrollMode.AUTO,
                     controls=[
                         ft.Text(
-                            "📊 Calculadora de Rendimiento",
+                            "Calculadora de Rendimiento",
                             size=35,
                             weight="bold",
                             color="#2D3E6F"
@@ -233,7 +236,7 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
                         ),
                         ft.Divider(height=20, color="transparent"),
                         ft.Text(
-                            "📋 Historial de Cálculos",
+                            "Historial de Cálculos",
                             size=25,
                             weight="bold",
                             color="#2D3E6F"

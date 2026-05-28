@@ -138,8 +138,12 @@ class UsuarioModel:
         
         cursor.execute(query, (id_usuario, monto_inicial, porcentaje_interes, tiempo_meses, rendimiento_final))
         conn.commit()
+        
+        nuevo_id = cursor.lastrowid  # Obtener el ID insertado
+        print(f"DEBUG - Nuevo cálculo guardado con ID: {nuevo_id}")
+        
         conn.close()
-        return True
+        return nuevo_id
 
     def obtener_calculos_usuario(self, id_usuario):
         conn = self.db.get_connection()
@@ -162,8 +166,14 @@ class UsuarioModel:
         conn = self.db.get_connection()
         cursor = conn.cursor()
         
+        print(f"MODEL: Eliminar cálculo ID={id_calculo}, Usuario ID={id_usuario}")
+        
         query = "DELETE FROM calculos_rendimiento WHERE id_calculo = %s AND id_usuario = %s"
         cursor.execute(query, (id_calculo, id_usuario))
+        
+        print(f"Filas afectadas: {cursor.rowcount}")
+        
         conn.commit()
         conn.close()
-        return True
+        
+        return cursor.rowcount > 0

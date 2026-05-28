@@ -22,7 +22,7 @@ def start(page: ft.Page):
         elif page.route == "/menu":  
             user_data = getattr(page, "user_data", None)
             if user_data:
-                page.views.append(MenuView(page, user_data))
+                page.views.append(MenuView(page, user_data, auth_ctrl))
             else:
                 page.go("/")
         elif page.route == "/forgot-password":

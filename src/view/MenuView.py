@@ -38,7 +38,7 @@ def MenuView(page: ft.Page, user_data, auth_controller):
                 content=ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text("FinanceApp", size=30, weight="bold", color="white"),
+                        ft.Text("FinanCO", size=30, weight="bold", color="white"),
                         ft.Row(
                             spacing=15,
                             controls=[
