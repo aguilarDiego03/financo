@@ -1,9 +1,15 @@
 import flet as ft
+import random
+import smtplib
+
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 def OlvidoView(page: ft.Page, auth_controller):
+
     correo = ft.TextField(
-        label="Correo electrónico",
+        label="Correo electronico",
         width=350,
         bgcolor="#F0F0F0",
         border_radius=10,
@@ -12,27 +18,79 @@ def OlvidoView(page: ft.Page, auth_controller):
     mensaje = ft.Text("", color="red")
 
     def recuperar_click(e):
+
         if not correo.value:
+
             mensaje.value = "Ingrese un correo"
+
             page.update()
+
             return
 
         success, msg = auth_controller.recover_password(
             correo.value
         )
 
-        if success:
-            page.recovery_email = correo.value
-            page.go("/reset-password")
+        if not success:
 
-        else:
-            mensaje.color = "red"
             mensaje.value = msg
 
-        page.update()
+            page.update()
 
+            return
+
+        codigo = random.randint(100000, 999999)
+
+        remitente = "supercubano3.0@gmail.com"
+
+        password = "ixiz smfg dqji ghrr"
+
+        email = MIMEMultipart()
+
+        email["From"] = remitente
+        email["To"] = correo.value
+        email["Subject"] = "Recuperacion de contrasena"
+
+        cuerpo = f"""
+    Hola.
+
+    Tu codigito es:
+
+    {codigo}
+
+    Ignora este correo si no lo solicitaste.
+    """
+
+        email.attach(
+            MIMEText(cuerpo, "plain")
+        )
+
+        print("Codigito:", codigo)
+        print("Destino:", correo.value)
+
+        servidor = smtplib.SMTP(
+            "smtp.gmail.com",
+            587
+        )
+
+        servidor.starttls()
+
+        servidor.login(
+            remitente,
+            password
+        )
+
+        servidor.send_message(email)
+
+        servidor.quit()
+
+        page.otp_code = str(codigo)
+
+        page.recovery_email = correo.value
+
+        page.go("/verify-otp")
     btn_recuperar = ft.ElevatedButton(
-        "Recuperar contraseña",
+        "Recuperar contrasena",
         width=200,
         bgcolor="#57689E",
         color=ft.Colors.WHITE,
@@ -53,7 +111,7 @@ def OlvidoView(page: ft.Page, auth_controller):
             ft.Column(
                 [
                     ft.Text(
-                        "Recuperar contraseña",
+                        "Recuperar contrasena",
                         size=30,
                         weight="bold",
                         color=ft.Colors.WHITE,

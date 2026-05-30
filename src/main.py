@@ -5,7 +5,7 @@ from view.RegisterView import RegisterView
 from view.MenuView import MenuView  
 from view.olvidoView import OlvidoView
 from view.ResetPasswordView import ResetPasswordView
-
+from view.verificadorView import VerificadorView
 
 def start(page: ft.Page):
     page.title = "Sistema"
@@ -29,6 +29,8 @@ def start(page: ft.Page):
             page.views.append(OlvidoView(page, auth_ctrl))
         elif page.route == "/reset-password":
             page.views.append(ResetPasswordView(page, auth_ctrl))
+        elif page.route == "/verify-otp":
+            page.views.append(VerificadorView(page))
         if not page.views:
             page.views.append(
                 ft.View("/", [ft.Text("Error: Ruta no encontrada")], bgcolor="#57689E")
