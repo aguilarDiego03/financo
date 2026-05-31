@@ -39,3 +39,5 @@ La entidad Metas_Financieras permite a los usuarios establecer objetivos económ
 ## Núm. control: 23308060610028
 ## Especialidad: Programacion 
 <img width="400" height="500" alt="1000045737" src="https://github.com/user-attachments/assets/e9d3186f-c2ac-4050-833a-12efc5630d77" />
+
+este es el final de mi aventura por porgramacion (fue horrible)
