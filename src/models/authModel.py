@@ -4,7 +4,6 @@ class AuthModel:
         self.db = db
         self.cursor = db.cursor()
 
-    # LOGIN
     def login(self, correo, contraseña):
 
         query = """
@@ -16,7 +15,6 @@ class AuthModel:
 
         return self.cursor.fetchone()
 
-    # RECUPERAR PASSWORD
     def verificar_correo(self, correo):
 
         query = """

@@ -138,7 +138,6 @@ def MetasView(page: ft.Page, user_data, auth_controller):
             page.update()
 
     def eliminar_meta(id_meta):
-        # Eliminar directamente sin diálogo como en calculadora
         success, msg = auth_controller.eliminar_meta(id_meta, user_data['id_usuario'])
         
         if success:

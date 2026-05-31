@@ -3,7 +3,6 @@ class AuthController:
     def __init__(self, auth_model):
         self.auth_model = auth_model
 
-    # LOGIN
     def login(self, correo, contraseña):
 
         usuario = self.auth_model.login(correo, contraseña)

@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         8.0.31 - MySQL Community Server - GPL
+-- Versión del servidor:         8.4.7 - MySQL Community Server - GPL
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             12.15.0.7171
+-- HeidiSQL Versión:             12.13.0.7147
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -30,48 +30,14 @@ CREATE TABLE IF NOT EXISTS `calculos_rendimiento` (
   `fecha_calculo` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_calculo`),
   KEY `fk_calculo_usuario` (`id_usuario`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Volcando datos para la tabla financo.calculos_rendimiento: 1 rows
-/*!40000 ALTER TABLE `calculos_rendimiento` DISABLE KEYS */;
-INSERT INTO `calculos_rendimiento` (`id_calculo`, `id_usuario`, `monto_inicial`, `porcentaje_interes`, `tiempo_meses`, `rendimiento_final`, `fecha_calculo`) VALUES
-	(1, 1, 10000.00, 8.50, 12, 10850.00, '2026-05-13 10:42:35');
-/*!40000 ALTER TABLE `calculos_rendimiento` ENABLE KEYS */;
-
--- Volcando estructura para tabla financo.categorias
-CREATE TABLE IF NOT EXISTS `categorias` (
-  `id_categoria` int NOT NULL AUTO_INCREMENT,
-  `nombre_categoria` varchar(100) NOT NULL,
-  `descripcion` text,
-  PRIMARY KEY (`id_categoria`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla financo.categorias: 3 rows
-/*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
-INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `descripcion`) VALUES
-	(1, 'Ahorro', 'Consejos relacionados con ahorro'),
-	(2, 'Inversión', 'Consejos sobre inversiones'),
-	(3, 'Finanzas Personales', 'Administración financiera');
-/*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
-
--- Volcando estructura para tabla financo.consejos
-CREATE TABLE IF NOT EXISTS `consejos` (
-  `id_consejo` int NOT NULL AUTO_INCREMENT,
-  `id_categoria` int NOT NULL,
-  `titulo` varchar(150) NOT NULL,
-  `contenido` text NOT NULL,
-  `autor` varchar(100) NOT NULL,
-  `fecha_publicacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_consejo`),
-  KEY `fk_consejo_categoria` (`id_categoria`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Volcando datos para la tabla financo.consejos: 2 rows
-/*!40000 ALTER TABLE `consejos` DISABLE KEYS */;
-INSERT INTO `consejos` (`id_consejo`, `id_categoria`, `titulo`, `contenido`, `autor`, `fecha_publicacion`) VALUES
-	(1, 1, 'Ahorra cada mes', 'Destina parte de tus ingresos al ahorro.', 'Administrador', '2026-05-13 10:42:35'),
-	(2, 2, 'Invierte inteligentemente', 'Diversifica tus inversiones.', 'Administrador', '2026-05-13 10:42:35');
-/*!40000 ALTER TABLE `consejos` ENABLE KEYS */;
+-- Volcando datos para la tabla financo.calculos_rendimiento: 2 rows
+/*!40000 ALTER TABLE `calculos_rendimiento` DISABLE KEYS */;
+INSERT INTO `calculos_rendimiento` (`id_calculo`, `id_usuario`, `monto_inicial`, `porcentaje_interes`, `tiempo_meses`, `rendimiento_final`, `fecha_calculo`) VALUES
+	(1, 1, 10000.00, 8.50, 12, 10850.00, '2026-05-13 10:42:35'),
+	(3, 3, 1000.00, 10.00, 12, 1100.00, '2026-05-31 16:24:36');
+/*!40000 ALTER TABLE `calculos_rendimiento` ENABLE KEYS */;
 
 -- Volcando estructura para tabla financo.metas_financieras
 CREATE TABLE IF NOT EXISTS `metas_financieras` (
@@ -84,12 +50,13 @@ CREATE TABLE IF NOT EXISTS `metas_financieras` (
   `estado` varchar(50) NOT NULL,
   PRIMARY KEY (`id_meta`),
   KEY `fk_meta_usuario` (`id_usuario`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla financo.metas_financieras: 1 rows
+-- Volcando datos para la tabla financo.metas_financieras: 2 rows
 /*!40000 ALTER TABLE `metas_financieras` DISABLE KEYS */;
 INSERT INTO `metas_financieras` (`id_meta`, `id_usuario`, `nombre_meta`, `monto_objetivo`, `monto_actual`, `fecha_limite`, `estado`) VALUES
-	(1, 2, 'Comprar Laptop', 25000.00, 8000.00, '2026-12-31', 'En progreso');
+	(1, 2, 'Comprar Laptop', 25000.00, 8000.00, '2026-12-31', 'En progreso'),
+	(2, 3, 'Mazatlan', 15000.00, 500.00, NULL, 'En progreso');
 /*!40000 ALTER TABLE `metas_financieras` ENABLE KEYS */;
 
 -- Volcando estructura para tabla financo.usuarios
@@ -103,13 +70,14 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `estado` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `correo` (`correo`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla financo.usuarios: 2 rows
+-- Volcando datos para la tabla financo.usuarios: 3 rows
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `contraseña`, `fecha_registro`, `foto_perfil`, `estado`) VALUES
 	(1, 'Juan Perez', 'juan@gmail.com', '123456', '2026-05-13 10:42:35', NULL, 1),
-	(2, 'Maria Lopez', 'maria@gmail.com', 'abcdef', '2026-05-13 10:42:35', NULL, 1);
+	(2, 'Maria Lopez', 'maria@gmail.com', 'abcdef', '2026-05-13 10:42:35', NULL, 1),
+	(3, 'Diego', 'aguil4r.dgx@gmail.com', '$2b$12$JtP.mi7ZFqM/ECRRgRR5mugMgknVlECaG2EIUFz27zoK.pvgeUgH2', '2026-05-31 16:23:24', NULL, 1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
