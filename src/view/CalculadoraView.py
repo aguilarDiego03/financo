@@ -45,22 +45,10 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
 
     def cargar_calculos():
         calculos = auth_controller.obtener_calculos_usuario(user_data['id_usuario'])
-        print(f"DEBUG - Cargando {len(calculos)} cálculos")  # Debug
         tabla_calculos.rows.clear()
         
         for calc in calculos:
             id_calc = calc['id_calculo']
-            print(f"DEBUG - Creando botón para ID: {id_calc}")  # Debug
-            
-            def crear_boton(id_calculo):
-                return ft.ElevatedButton(
-                    "Eliminar",
-                    on_click=lambda e, id_c=id_calculo: eliminar_calculo(id_c),
-                    bgcolor="red",
-                    color="white",
-                    width=80,
-                    height=30,
-                )
             
             tabla_calculos.rows.append(
                 ft.DataRow(
@@ -70,10 +58,32 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
                         ft.DataCell(ft.Text(str(calc['tiempo_meses']))),
                         ft.DataCell(ft.Text(f"${calc['rendimiento_final']:,.2f}", color="green", weight="bold")),
                         ft.DataCell(ft.Text(str(calc['fecha_calculo'])[:10])),
-                        ft.DataCell(crear_boton(id_calc)),
+                        ft.DataCell(
+                            ft.ElevatedButton(
+                                "Eliminar",
+                                bgcolor="red",
+                                color="white",
+                                width=80,
+                                height=30,
+                                on_click=lambda e, id_c=id_calc: eliminar_calculo(id_c),
+                            )
+                        ),
                     ]
                 )
             )
+        page.update()
+
+    def eliminar_calculo(id_calculo):
+        success, msg = auth_controller.eliminar_calculo(id_calculo, user_data['id_usuario'])
+        
+        if success:
+            cargar_calculos()
+            mensaje.value = msg
+            mensaje.color = "green"
+        else:
+            mensaje.value = msg
+            mensaje.color = "red"
+        
         page.update()
 
     def calcular_click(e):
@@ -104,9 +114,6 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
             porcentaje = float(porcentaje_input.value)
             meses = int(meses_input.value)
             
-            rendimiento = auth_controller.calcular_rendimiento(monto, porcentaje, meses)
-            resultado_texto.value = f"Rendimiento: ${rendimiento:,.2f}"
-            
             success, msg = auth_controller.guardar_calculo(user_data['id_usuario'], monto, porcentaje, meses)
             mensaje.value = msg
             mensaje.color = "green" if success else "red"
@@ -116,46 +123,13 @@ def CalculadoraView(page: ft.Page, user_data, auth_controller):
                 monto_input.value = ""
                 porcentaje_input.value = ""
                 meses_input.value = ""
+                resultado_texto.value = ""
             
             page.update()
         except Exception as ex:
             mensaje.value = f"Error: {str(ex)}"
             mensaje.color = "red"
             page.update()
-
-    def eliminar_calculo(id_calculo):
-        print(f"DEBUG - Eliminar cálculo ID: {id_calculo}")  # Debug
-        
-        def confirmar_eliminar(e):
-            print(f"DEBUG - Confirmando eliminación ID: {id_calculo}")  # Debug
-            success, msg = auth_controller.eliminar_calculo(id_calculo, user_data['id_usuario'])
-            print(f"DEBUG - Resultado: success={success}, msg={msg}")  # Debug
-            if success:
-                cargar_calculos()
-                mensaje.value = msg
-                mensaje.color = "green"
-            else:
-                mensaje.value = msg
-                mensaje.color = "red"
-            dialog.open = False
-            page.update()
-        
-        def cerrar_dialogo(e):
-            dialog.open = False
-            page.update()
-        
-        dialog = ft.AlertDialog(
-            title=ft.Text("Confirmar eliminación"),
-            content=ft.Text(f"¿Seguro que deseas eliminar este cálculo ID {id_calculo}?"),
-            actions=[
-                ft.TextButton("Sí", on_click=confirmar_eliminar),
-                ft.TextButton("No", on_click=cerrar_dialogo),
-            ],
-            actions_alignment=ft.MainAxisAlignment.END,
-        )
-        page.dialog = dialog
-        dialog.open = True
-        page.update()
 
     cargar_calculos()
 

@@ -22,3 +22,4 @@ src/view/MenuView.py
 src/view/RegisterView.py
 src/view/ResetPasswordView.py
 src/view/olvidoView.py
+src/view/verificadorView.py

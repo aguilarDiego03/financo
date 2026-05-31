@@ -149,6 +149,6 @@ class AuthController:
     def eliminar_calculo(self, id_calculo, id_usuario):
         try:
             self.usuario_model.eliminar_calculo(id_calculo, id_usuario)
-            return True, "Cálculo eliminado"
+            return True, "Cálculo eliminado exitosamente"
         except Exception as e:
             return False, f"Error: {str(e)}"
