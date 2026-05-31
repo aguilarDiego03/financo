@@ -169,3 +169,62 @@ class UsuarioModel:
         conn.commit()
         conn.close()
         return True
+
+    def guardar_meta(self, id_usuario, nombre_meta, monto_objetivo, monto_actual, fecha_limite):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = """
+        INSERT INTO metas_financieras 
+        (id_usuario, nombre_meta, monto_objetivo, monto_actual, fecha_limite, estado)
+        VALUES (%s, %s, %s, %s, %s, 'En progreso')
+        """
+        
+        cursor.execute(query, (id_usuario, nombre_meta, monto_objetivo, monto_actual, fecha_limite))
+        conn.commit()
+        conn.close()
+        return True
+
+    def obtener_metas_usuario(self, id_usuario):
+        conn = self.db.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        query = """
+        SELECT id_meta, nombre_meta, monto_objetivo, monto_actual, fecha_limite, estado
+        FROM metas_financieras 
+        WHERE id_usuario = %s
+        ORDER BY 
+            CASE WHEN estado = 'En progreso' THEN 0 ELSE 1 END,
+            fecha_limite ASC
+        """
+        
+        cursor.execute(query, (id_usuario,))
+        metas = cursor.fetchall()
+        conn.close()
+        return metas
+
+    def actualizar_meta(self, id_meta, monto_actual, estado):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = """
+        UPDATE metas_financieras 
+        SET monto_actual = %s, estado = %s
+        WHERE id_meta = %s
+        """
+        
+        cursor.execute(query, (monto_actual, estado, id_meta))
+        conn.commit()
+        conn.close()
+        return True
+
+    def eliminar_meta(self, id_meta, id_usuario):
+        conn = self.db.get_connection()
+        cursor = conn.cursor()
+        
+        query = "DELETE FROM metas_financieras WHERE id_meta = %s AND id_usuario = %s"
+        cursor.execute(query, (id_meta, id_usuario))
+        
+        conn.commit()
+        conn.close()
+        return True

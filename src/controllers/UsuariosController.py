@@ -152,3 +152,30 @@ class AuthController:
             return True, "Cálculo eliminado exitosamente"
         except Exception as e:
             return False, f"Error: {str(e)}"
+
+    def guardar_meta(self, id_usuario, nombre_meta, monto_objetivo, monto_actual, fecha_limite):
+        try:
+            self.usuario_model.guardar_meta(id_usuario, nombre_meta, monto_objetivo, monto_actual, fecha_limite)
+            return True, "Meta guardada exitosamente"
+        except Exception as e:
+            return False, f"Error: {str(e)}"
+
+    def obtener_metas_usuario(self, id_usuario):
+        try:
+            return self.usuario_model.obtener_metas_usuario(id_usuario)
+        except Exception as e:
+            return []
+
+    def actualizar_meta(self, id_meta, monto_actual, estado):
+        try:
+            self.usuario_model.actualizar_meta(id_meta, monto_actual, estado)
+            return True, "Meta actualizada"
+        except Exception as e:
+            return False, f"Error: {str(e)}"
+
+    def eliminar_meta(self, id_meta, id_usuario):
+        try:
+            self.usuario_model.eliminar_meta(id_meta, id_usuario)
+            return True, "Meta eliminada"
+        except Exception as e:
+            return False, f"Error: {str(e)}"

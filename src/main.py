@@ -6,9 +6,10 @@ from view.MenuView import MenuView
 from view.olvidoView import OlvidoView
 from view.ResetPasswordView import ResetPasswordView
 from view.verificadorView import VerificadorView
+from view.MetasView import MetasView
 
 def start(page: ft.Page):
-    page.title = "Sistema"
+    page.title = "FinanCO"
     page.bgcolor = "#57689E" 
     
     auth_ctrl = AuthController()
@@ -31,6 +32,12 @@ def start(page: ft.Page):
             page.views.append(ResetPasswordView(page, auth_ctrl))
         elif page.route == "/verify-otp":
             page.views.append(VerificadorView(page))
+        elif page.route == "/metas":
+            user_data = getattr(page, "user_data", None)
+            if user_data:
+                page.views.append(MetasView(page, user_data, auth_ctrl))
+            else:
+                page.go("/")
         if not page.views:
             page.views.append(
                 ft.View("/", [ft.Text("Error: Ruta no encontrada")], bgcolor="#57689E")

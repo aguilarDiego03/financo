@@ -26,6 +26,11 @@ def MenuView(page: ft.Page, user_data, auth_controller):
         page.views.append(CalculadoraView(page, user_data, auth_controller))
         page.update()
 
+    def ir_metas(e):
+        from view.MetasView import MetasView
+        page.views.append(MetasView(page, user_data, auth_controller))
+        page.update()
+
     return ft.View(
         route="/menu",
         bgcolor="#EAF0FF",
@@ -47,6 +52,7 @@ def MenuView(page: ft.Page, user_data, auth_controller):
                                 ft.TextButton("Consejos", on_click=ir_consejos, style=ft.ButtonStyle(color="white")),
                                 ft.TextButton("Inversiones", on_click=ir_inversiones, style=ft.ButtonStyle(color="white")),
                                 ft.TextButton("Calculadora", on_click=ir_calculadora, style=ft.ButtonStyle(color="white")),
+                                ft.TextButton("Metas", on_click=ir_metas, style=ft.ButtonStyle(color="white")),
                             ]
                         )
                     ]
@@ -112,6 +118,7 @@ def MenuView(page: ft.Page, user_data, auth_controller):
                                 crear_tarjeta("💵", "Ahorro", "Guardar dinero para metas futuras"),
                                 crear_tarjeta("📈", "Inversión", "Hacer crecer tu dinero"),
                                 crear_tarjeta("📊", "Presupuesto", "Organiza tus ingresos y gastos"),
+                                crear_tarjeta("🎯", "Metas", "Establece y sigue tus objetivos"),
                             ]
                         ),
                         ft.ElevatedButton(
